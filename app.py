@@ -1,10 +1,13 @@
-import os
+from os import getenv
+from dotenv import load_dotenv
 
 import openai
 from flask import Flask, redirect, render_template, request, url_for
 
+load_dotenv()
+
 app = Flask(__name__)
-openai.api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = getenv("OPENAI_API_KEY")
 
 
 @app.route("/", methods=("GET", "POST"))
@@ -23,13 +26,11 @@ def index():
 
 
 def generate_prompt(animal):
-    return """Suggest three names for an animal that is a superhero.
+    return f"""Suggest three names for an animal that is a superhero.
 
-Animal: Cat
-Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
-Animal: Dog
-Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
-Animal: {}
-Names:""".format(
-        animal.capitalize()
-    )
+            Animal: Cat
+            Names: Captain Sharpclaw, Agent Fluffball, The Incredible Feline
+            Animal: Dog
+            Names: Ruff the Protector, Wonder Canine, Sir Barks-a-Lot
+            Animal: {animal.capitalize()}
+            Names:"""
